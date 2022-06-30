@@ -24,7 +24,16 @@ export default function Home() {
       senha,
     };
 
+    if (email === "" || senha === "") {
+      alert("Informe o email e a senha!");
+      return;
+    }
+
+    setLoading(true);
+
     await signIn(data);
+
+    setLoading(false);
   }
 
   return (
@@ -51,7 +60,7 @@ export default function Home() {
               onChange={(e) => setSenha(e.target.value)}
             />
 
-            <Button type="submit" loading={false}>
+            <Button type="submit" loading={loading}>
               Acessar
             </Button>
           </form>

@@ -6,8 +6,34 @@ import logoing from "../../../public/logo.svg";
 import { Input } from "../../components/ui/input/input";
 import { Button } from "../../components/ui/button/button";
 import Link from "next/link";
+import { FormEvent, useState, useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Cadastro() {
+  const { cadastrar } = useContext(AuthContext);
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function cadastrarNovo(e: FormEvent) {
+    e.preventDefault();
+    if (nome === "" || email === "" || senha === "") {
+      alert("Preencha todos os campos");
+      return;
+    }
+    let data = {
+      nome,
+      email,
+      senha,
+    };
+    setLoading(true);
+
+    await cadastrar(data);
+
+    setLoading(false);
+  }
+
   return (
     <>
       <Head>
@@ -19,14 +45,29 @@ export default function Cadastro() {
 
         <div className={styles.login}>
           <h1>Criando sua conta</h1>
-          <form action="">
-            <Input placeholder="Digite seu nome" type="text" />
+          <form onSubmit={cadastrarNovo}>
+            <Input
+              placeholder="Digite seu nome"
+              type="text"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+            />
 
-            <Input placeholder="Digite seu email" type="text" />
+            <Input
+              placeholder="Digite seu email"
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-            <Input placeholder="Digite sua senha" type="password" />
+            <Input
+              placeholder="Digite sua senha"
+              type="password"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+            />
 
-            <Button type="submit" loading={false}>
+            <Button type="submit" loading={loading}>
               Cadastrar
             </Button>
           </form>
