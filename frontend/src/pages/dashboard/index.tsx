@@ -1,7 +1,22 @@
+import { canSSAuth } from "../../utils/canSSAuth";
+import Head from "next/head";
+import { Header } from "../../components/Header";
+
 export default function Dashboard() {
   return (
-    <div>
-      <h1>teste</h1>
-    </div>
+    <>
+      <Head>
+        <title>Painel - Pizzaria</title>
+      </Head>
+      <div>
+        <Header />
+      </div>
+    </>
   );
 }
+
+export const getServerSideProps = canSSAuth(async (ctx) => {
+  return {
+    props: {},
+  };
+});

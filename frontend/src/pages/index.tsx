@@ -6,7 +6,11 @@ import logoImg from "../../public/logo.svg";
 import { Input } from "../components/ui/input/input";
 import { Button } from "../components/ui/button/button";
 import Link from "next/link";
+
+import { canSSGuest } from "../utils/canSSGuest";
+
 import { AuthContext } from "../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 export default function Home() {
   const { signIn } = useContext(AuthContext);
@@ -25,7 +29,7 @@ export default function Home() {
     };
 
     if (email === "" || senha === "") {
-      alert("Informe o email e a senha!");
+      toast.warning("Informe o email e a senha!");
       return;
     }
 
@@ -73,3 +77,9 @@ export default function Home() {
     </>
   );
 }
+
+export const getServerSideProps = canSSGuest(async (ctx) => {
+  return {
+    props: {},
+  };
+});

@@ -1,8 +1,9 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useState, useEffect } from "react";
 import { destroyCookie, setCookie, parseCookies } from "nookies";
 import Router from "next/router";
 
 import { api } from "../services/apiCliente";
+import { toast } from "react-toastify";
 
 type AuthContextData = {
   user: UserProps;
@@ -48,6 +49,27 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserProps>();
   const isAuthenticated = !!user;
 
+  useEffect(() => {
+    const { "@meu.token": token } = parseCookies();
+
+    if (token) {
+      api
+        .get("/me")
+        .then((response) => {
+          const { id, nome, email } = response.data;
+
+          setUser({
+            id,
+            nome,
+            email,
+          });
+        })
+        .catch(() => {
+          singOut();
+        });
+    }
+  }, []);
+
   async function signIn({ email, senha }: SignInProps) {
     try {
       const response = await api.post("/session", {
@@ -71,9 +93,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
       //passando token para proximas requisiçoes
       api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
+      toast.success("Bem vindo");
       //Redirecionar para deshboard
       Router.push("dashboard");
     } catch (error) {
+      toast.error("Erro ao acessar!");
       console.log("Erro ao acessar", error);
     }
   }
@@ -86,10 +110,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         senha,
       });
 
-      alert("cadastrado com sucesso");
+      toast.success("cadastrado com sucesso");
       Router.push("/");
     } catch (error) {
-      console.log("Erro ao cadastrar ", error);
+      toast.error("Erro ao cadastrar ", error);
     }
   }
 

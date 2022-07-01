@@ -8,6 +8,7 @@ import { Button } from "../../components/ui/button/button";
 import Link from "next/link";
 import { FormEvent, useState, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 export default function Cadastro() {
   const { cadastrar } = useContext(AuthContext);
@@ -19,7 +20,7 @@ export default function Cadastro() {
   async function cadastrarNovo(e: FormEvent) {
     e.preventDefault();
     if (nome === "" || email === "" || senha === "") {
-      alert("Preencha todos os campos");
+      toast.error("Preencha todos os campos");
       return;
     }
     let data = {
