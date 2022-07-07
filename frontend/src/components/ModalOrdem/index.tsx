@@ -7,9 +7,16 @@ interface ModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
   order: OrderItemProps[];
+
+  handleFinishIOrder: (id: string) => void;
 }
 
-export function ModalOrdem({ isOpen, onRequestClose, order }: ModalProps) {
+export function ModalOrdem({
+  isOpen,
+  onRequestClose,
+  order,
+  handleFinishIOrder,
+}: ModalProps) {
   const customStyles = {
     content: {
       top: "50%",
@@ -47,7 +54,10 @@ export function ModalOrdem({ isOpen, onRequestClose, order }: ModalProps) {
           </section>
         ))}
 
-        <button className={styles.botao} onClick={() => {}}>
+        <button
+          className={styles.botao}
+          onClick={() => handleFinishIOrder(order[0].ordem_id)}
+        >
           Concluir pedido
         </button>
       </div>
