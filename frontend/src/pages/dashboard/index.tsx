@@ -69,9 +69,10 @@ export default function Dashboard({ ordens }: HomeProps) {
     setModalVisible(true);
   }
   async function handleFinishItem(id: string) {
+    //alert(id);
     const api = setupAPIClient();
-    await api.put("/order/finalizar", {
-      order_id: id,
+    await api.put("order/finalizar", {
+      ordem_id: id,
     });
 
     const response = await api.get("/ordens");

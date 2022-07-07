@@ -7,16 +7,15 @@ interface OrderRequest {
 class FinalizarOrderService {
   async execute({ ordem_id }: OrderRequest) {
     const order = await prismaClient.ordem.update({
-      where:{
-        id: ordem_id
+      where: {
+        id: ordem_id,
       },
-      data:{
+      data: {
         status: true,
-      }
-    })
+      },
+    });
 
     return order;
-
   }
 }
 
