@@ -6,6 +6,7 @@ import { AuthUserController } from "./controllers/user/AuthUserController";
 import { DetailUserController } from "./controllers/user/DetailUserController";
 import { CreateCategoriaController } from "./controllers/categoria/CreateCategoriaController";
 import { ListCategoriaController } from "./controllers/categoria/ListCategoriaController";
+import { RemoverCategoriaController } from "./controllers/categoria/RemoverCategoriaController";
 
 import { CreateProdutoController } from "./controllers/produto/CreateProdutoController";
 import { ListarProdutosController } from "./controllers/produto/ListarProdutosController";
@@ -36,17 +37,19 @@ router.get("/me", isAuthenticated, new DetailUserController().handle);
 
 router.post(
   "/categoria",
-  isAuthenticated,
+
   new CreateCategoriaController().handle
 );
 
 router.post(
   "/categoria",
-  isAuthenticated,
+
   new CreateCategoriaController().handle
 );
 
-router.get("/categoria", isAuthenticated, new ListCategoriaController().handle);
+router.get("/categoria", new ListCategoriaController().handle);
+
+router.get("/categoria/delete", new RemoverCategoriaController().handle);
 
 router.post(
   "/produto",
