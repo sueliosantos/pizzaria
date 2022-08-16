@@ -5,18 +5,32 @@ interface OrderRequest {
 }
 class RemoverCategoriaService {
   async execute({ id }: OrderRequest) {
-    console.log(id);
     const categoria = await prismaClient.categoria.delete({
       where: {
         id: id,
       },
     });
+  }
 
-    if (categoria === null) {
-      throw new Error("Erro ao deletar a categoria");
-    }
+  async findById({ id }) {
+    const categoria = await prismaClient.categoria.findFirst({
+      where: {
+        id: id,
+      },
+    });
 
     return categoria;
+  }
+
+  async update({ id, nome }) {
+    const categoria = await prismaClient.categoria.update({
+      where: {
+        id: id,
+      },
+      data: {
+        nome: nome,
+      },
+    });
   }
 }
 

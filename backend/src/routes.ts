@@ -49,7 +49,7 @@ router.post(
 
 router.get("/categoria", new ListCategoriaController().handle);
 
-router.get("/categoria/delete", new RemoverCategoriaController().handle);
+router.delete("/categoria/:id", new RemoverCategoriaController().handle);
 
 router.post(
   "/produto",
@@ -63,6 +63,11 @@ router.get(
   isAuthenticated,
   new ListarProdutosController().handle
 );
+router.put(
+  "/categoriaeditar/:id",
+  new RemoverCategoriaController().updateCategoria
+);
+router.get("/categoria/:id", new RemoverCategoriaController().findId);
 
 router.post("/order", isAuthenticated, new CreateOrderController().handle);
 router.delete("/order", isAuthenticated, new RemoverOrderController().handle);
