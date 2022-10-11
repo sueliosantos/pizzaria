@@ -26,13 +26,18 @@ class Categoria extends React.Component {
     this.buscarCategorias();
   }
 
-  buscarCategorias = () => {
-    fetch("http://localhost:3333/categoria")
+  async buscarCategorias() {
+    const api = setupAPIClient();
+    const teste = await api.get("/categoria");
+    //console.log(teste.data);
+    this.setState({ categorias: teste.data });
+    /*fetch("http://localhost:3333/categoria")
       .then((resposta) => resposta.json())
       .then((dados) => {
         this.setState({ categorias: dados });
       });
-  };
+    */
+  }
 
   async deletarCategoria(id) {
     await axios.delete(`http://localhost:3333/categoria/${id}`);

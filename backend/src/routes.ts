@@ -47,7 +47,7 @@ router.post(
   new CreateCategoriaController().handle
 );
 
-router.get("/categoria", new ListCategoriaController().handle);
+router.get("/categoria", isAuthenticated, new ListCategoriaController().handle);
 
 router.delete("/categoria/:id", new RemoverCategoriaController().handle);
 
