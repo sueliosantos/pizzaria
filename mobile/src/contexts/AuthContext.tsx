@@ -2,6 +2,8 @@ import React, { useState, createContext, ReactNode, useEffect } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { api } from "../service/api";
+
 type AuthContextData = {
   user: UserProps;
   isAuthenticated: boolean;
@@ -13,7 +15,7 @@ type AuthContextData = {
 
 type UserProps = {
   id: string;
-  name: string;
+  nome: string;
   email: string;
   token: string;
 };
@@ -24,7 +26,7 @@ type AuthProviderProps = {
 
 type SignInProps = {
   email: string;
-  password: string;
+  senha: string;
 };
 
 export const AuthContext = createContext({} as AuthContextData);
@@ -32,7 +34,7 @@ export const AuthContext = createContext({} as AuthContextData);
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserProps>({
     id: "",
-    name: "",
+    nome: "",
     email: "",
     token: "",
   });
@@ -40,7 +42,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [loadingAuth, setLoadingAuth] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const isAuthenticated = !!user.name;
+  const isAuthenticated = !!user.nome;
 
   useEffect(() => {
     async function getUser() {
@@ -56,7 +58,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         setUser({
           id: hasUser.id,
-          name: hasUser.name,
+          nome: hasUser.nome,
           email: hasUser.email,
           token: hasUser.token,
         });
@@ -68,45 +70,38 @@ export function AuthProvider({ children }: AuthProviderProps) {
     getUser();
   }, []);
 
-  async function signIn({ email, password }: SignInProps) {
+  async function signIn({ email, senha }: SignInProps) {
     setLoadingAuth(true);
-    /*ry {
-      const response = await api.post("/session", {
-        email,
-        password,
-      });
-      //console.log(response.data);
 
-      const { id, name, token } = response.data;
+    try {
+      const respose = await api.post("/session", {
+        email,
+        senha,
+      });
+
+      const { id, nome, token } = respose.data;
 
       const data = {
-        ...response.data,
+        ...respose.data,
       };
-
       await AsyncStorage.setItem("@sujeitopizzaria", JSON.stringify(data));
 
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      setUser({
-        id,
-        name,
-        email,
-        token,
-      });
+      setLoadingAuth(false);
 
-      setLoadingAuth(false);
-    } catch (err) {
-      console.log("erro ao acessar", err);
-      setLoadingAuth(false);
+      setUser({ id, nome, email, token });
+    } catch (error) {
+      console.log("error ao acessar", error);
+      setLoading(false);
     }
-    */
   }
 
   async function signOut() {
     await AsyncStorage.clear().then(() => {
       setUser({
         id: "",
-        name: "",
+        nome: "",
         email: "",
         token: "",
       });
