@@ -52,9 +52,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       // Verificar se recebemos as informaçoes dele.
       if (Object.keys(hasUser).length > 0) {
-        //api.defaults.headers.common[
-        //   "Authorization"
-        // ] = `Bearer ${hasUser.token}`;
+        api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${hasUser.token}`;
 
         setUser({
           id: hasUser.id,
