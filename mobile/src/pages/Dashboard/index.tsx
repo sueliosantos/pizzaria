@@ -1,9 +1,22 @@
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useState } from 'react';
 import { Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StackParamsList } from '../../routes/app.routes';
 
 
 export default function Dashboard() {
+  const navigation = useNavigation<NativeStackNavigationProp<StackParamsList>>();
+  const [number, setNumber] = useState('')
+
+  async function openOrders() {
+    if (number === '') {
+      return
+    }
+
+    navigation.navigate('Order', { number: number, order_id: "123" })
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -12,9 +25,12 @@ export default function Dashboard() {
         placeholder='Número da mesa'
         placeholderTextColor='#F0F0F0'
         style={styles.input}
-        keyboardType="numeric" />
+        keyboardType="numeric"
+        value={number}
+        onChangeText={setNumber}
+      />
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={openOrders}>
         <Text style={styles.buttonText}>Abrir mesa</Text>
       </TouchableOpacity>
     </SafeAreaView>
