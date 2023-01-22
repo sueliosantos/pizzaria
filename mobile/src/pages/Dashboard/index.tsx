@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackParamsList } from '../../routes/app.routes';
+import { api } from '../../service/api';
 
 
 export default function Dashboard() {
@@ -14,8 +15,13 @@ export default function Dashboard() {
     if (number === '') {
       return
     }
+    const response = await api.post('/order', {
+      mesa: Number(number)
+    })
 
-    navigation.navigate('Order', { number: number, order_id: "123" })
+    //console.log(response.data);
+    navigation.navigate('Order', { number: number, order_id: response.data.id })
+    setNumber('')
   }
 
   return (
